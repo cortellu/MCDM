@@ -1,0 +1,27 @@
+m = MethodCompatibilizer(
+    method="promethee_ii",
+    dataframe=pd.DataFrame(
+        {
+            "candidates": ["a", "b", "c"],
+            "metric_a": [50, 40, 45],
+            "metric_b": [35, 20, 50],
+        }
+    ),
+    canditates_column="candidates",
+    metrics_specs={
+        'metric_a': {
+            'cost_criteria':0, 
+            'weight':0.5,
+            "mode":2, 
+            "preference_limiar":0, 
+            "indiference_limiar":0
+        },
+        'metric_b': {
+            'cost_criteria':0, 
+            'weight':0.5,
+            "mode":2, 
+            "preference_limiar":0, 
+            "indiference_limiar":0
+        }
+    }
+)
