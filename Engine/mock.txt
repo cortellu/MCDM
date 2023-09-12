@@ -2,7 +2,7 @@ a = ArrayComposition(
     dataframe=pd.DataFrame(
         {
             "candidates": ["a", "b", "c"],
-            "metric_a": [50, 40, 45],
+            "metric_a": [50, 40, 40],
             "metric_b": [35, 20, 50],
         }
     )
