@@ -1,5 +1,5 @@
-from ArrayComposition import ArrayComposition
-from Compatibilizer import MethodCompatibilizer
+from Engine.ArrayComposition import ArrayComposition
+from Evaluator.Compatibilizer import MethodCompatibilizer
 
 class Prometheeii():
     
@@ -8,6 +8,7 @@ class Prometheeii():
         self.canditates_column = canditates_column
         self.metrics_specs = metrics_specs
         self.fl_normalize = kwargs.get('fl_normalize', False)
+    
     
     def preference_comparison(self, mode, arr, cost_criteria, weight, indiference_limiar, preference_limiar):
         from numpy import select
@@ -50,8 +51,11 @@ class Prometheeii():
             cost_criteria = metric_spec.get('cost_criteria', 0)
             preference_limiar = metric_spec.get('preference_limiar', 1)
             indiference_limiar = metric_spec.get('indiference_limiar', 0)
-            array_composition_instance = ArrayComposition(self.dataframe) 
-            arr_unique = array_composition_instance.get_non_duplicated_array_from_series(metric_name)          
+            array_composition_instance = ArrayComposition(self.dataframe, self.fl_normalize) 
+            arr_unique = array_composition_instance.get_non_duplicated_array_from_series(
+                metric_name, 
+                return_counts=False
+            )          
             arr_prometheeii = array_composition_instance.get_prometheeii_array_generator(
                 column=metric_name, 
                 pref_func=self.preference_comparison,
@@ -84,6 +88,9 @@ class Prometheeii():
         for metric in self.metrics_specs.keys():
             df_score_metric = metric_scores.get(metric)
             df_promethee_ii = df_promethee_ii.merge(df_score_metric, on=metric)
+        score_columns = [column for column in df_promethee_ii.filter(like='score_').columns]
+        df_promethee_ii['score_candidate'] = df_promethee_ii[score_columns].sum(axis=1)
+        df_promethee_ii['ranking'] = df_promethee_ii['score_candidate'].rank(ascending=False)
         return df_promethee_ii
 
 
