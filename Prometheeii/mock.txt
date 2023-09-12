@@ -14,8 +14,8 @@ p = Prometheeii(
             'cost_criteria':1, 
             'weight':0.5,
             "mode":2, 
-            "preference_limiar":8000, 
-            "indiference_limiar":0
+            "preference_limiar": 0, 
+            "indiference_limiar":8000
         },
         'qualidade': {
             'cost_criteria':0, 

@@ -88,6 +88,9 @@ class Prometheeii():
         for metric in self.metrics_specs.keys():
             df_score_metric = metric_scores.get(metric)
             df_promethee_ii = df_promethee_ii.merge(df_score_metric, on=metric)
+        score_columns = [column for column in df_promethee_ii.filter(like='score_').columns]
+        df_promethee_ii['score_candidate'] = df_promethee_ii[score_columns].sum(axis=1)
+        df_promethee_ii['ranking'] = df_promethee_ii['score_candidate'].rank(ascending=False)
         return df_promethee_ii
 
 
